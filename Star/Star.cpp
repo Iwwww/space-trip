@@ -11,10 +11,18 @@ Star::Star(int dotRadius) {
     m_dotRadius = dotRadius;
     m_dot = sf::CircleShape(m_dotRadius);
     m_dot.setFillColor(sf::Color::White);
-    // m_dot.getPosition
 
     setPos(m_posX, m_posY);
 };
+
+void Star::setSize(int size) {
+    m_dotRadius = size;
+    m_dot = sf::CircleShape(m_dotRadius);
+    m_dot.setFillColor(sf::Color::White);
+
+    setPos(m_posX, m_posY);
+
+}
 
 void Star::setPos(int posX, int posY) {
     m_posX = posX;
@@ -28,6 +36,14 @@ void Star::setStarColor(sf::Color color) {
 
 void Star::draw(sf::RenderWindow& window) {
     window.draw(m_dot);
+}
+
+void Star::frame() {
+    m_frameCount++;
+    if (m_frameCount >= m_speed) {
+        m_frameCount = 0;
+        m_isNewRender = 1;
+    }
 }
 
 void Star::setPolar() {
@@ -49,12 +65,15 @@ void Star::setRadius(int radius) {
 void Star::setCenter(int x, int y) {
     m_centerX = x;
     m_centerY = y;
-    // this->setPos(m_centerX, m_centerY);
 }
 
 void Star::setRenderSize(int x, int y) {
     m_renderX = x;
     m_renderY = y;
+}
+
+void Star::setSpeed(int speed) {
+    m_speed = speed / 10;
 }
 
 int Star::getPosX() {
@@ -71,4 +90,22 @@ int Star::getRadian() {
 
 int Star::getRadius() {
     return m_dotRadius;
+}
+
+int Star::getSpeed() {
+    return m_speed;
+}
+
+int Star::getFrameCount() {
+    return m_frameCount;
+}
+
+bool Star::outOfRender() {
+    return (m_dot.getPosition().x < 0 || m_dot.getPosition().y < 0 || m_dot.getPosition().x > m_renderX || m_dot.getPosition().y > m_renderY);
+}
+
+bool Star::isNewRender() {
+    bool tmp = m_isNewRender;
+    m_isNewRender = 0;
+    return tmp;
 }
